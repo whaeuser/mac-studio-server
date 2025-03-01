@@ -131,7 +131,7 @@ The dramatic reduction in memory usage (around 8GB) is achieved by:
 
 ### GPU Memory Optimization
 
-By default, Metal runtime allocates only about 25% of system RAM for GPU operations. With our reduced system memory footprint, you can allocate more memory to GPU:
+By default, Metal runtime allocates only about 75% of system RAM for GPU operations. With our reduced system memory footprint, you can allocate more memory to GPU:
 
 ```bash
 # Example: Allocate 120GB for GPU on a 128GB system
