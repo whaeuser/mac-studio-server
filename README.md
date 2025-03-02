@@ -10,6 +10,13 @@ This configuration is optimized for running Mac Studio as a dedicated Ollama ser
 - Automatic startup and recovery
 - Performance optimizations for Apple Silicon
 
+## Latest Updates
+
+- **[v1.1.0]** Added GPU Memory Optimization - configure Metal to use more RAM for models
+- **[v1.0.0]** Initial release with system optimizations and Ollama configuration
+
+See the [CHANGELOG](CHANGELOG.md) for detailed version history.
+
 ## Features
 
 - Automatic startup on boot
@@ -50,6 +57,7 @@ cd mac-studio-server
 # Default values shown
 export OLLAMA_USER=$(whoami)  # User to run Ollama as
 export OLLAMA_BASE_DIR="/Users/$OLLAMA_USER/mac-studio-server"
+export OLLAMA_GPU_PERCENT="80"  # Set to enable GPU memory optimization (percentage of RAM to allocate)
 ```
 
 3. Run the installation script:
@@ -131,12 +139,12 @@ The dramatic reduction in memory usage (around 8GB) is achieved by:
 
 ### GPU Memory Optimization
 
-By default, Metal runtime allocates only about 75% of system RAM for GPU operations. With our reduced system memory footprint, you can allocate more memory to GPU:
+By default, Metal runtime allocates only about 75% of system RAM for GPU operations. This configuration includes optional GPU memory optimization that:
+- Runs at system startup (when enabled)
+- Allocates a configurable percentage of your total RAM to GPU operations
+- Logs the changes for monitoring
 
-```bash
-# Example: Allocate 120GB for GPU on a 128GB system
-sudo sysctl iogpu.wired_limit_mb=122880
-```
+The GPU memory setting is critical for LLM performance on Apple Silicon, as it determines how much of your unified memory can be used for model operations.
 
 This allows:
 - More efficient model loading
@@ -144,14 +152,37 @@ This allows:
 - Increased number of concurrent model instances
 - Fuller utilization of Apple Silicon's unified memory architecture
 
+To enable and configure GPU memory optimization, set the environment variable before installation:
+```bash
+export OLLAMA_GPU_PERCENT="80"  # Allocate 80% of RAM to GPU
+./scripts/install.sh
+```
+
+Or to adjust after installation:
+```bash
+# Run with a custom percentage
+OLLAMA_GPU_PERCENT=85 sudo ./scripts/set-gpu-memory.sh
+```
+
+If you don't set OLLAMA_GPU_PERCENT, GPU memory optimization will be skipped.
+
 For best performance:
 1. Use SSH for remote management
 2. Keep display disconnected when possible
 3. Avoid running GUI applications
 4. Consider disabling Screen Sharing if not needed for emergency access
-5. Adjust `iogpu.wired_limit_mb` based on your available memory
+5. Adjust GPU memory percentage based on your available memory and workload
 
 These optimizations leave more resources available for Ollama model operations, allowing for better performance when running large language models.
+
+## Versioning
+
+This project follows [Semantic Versioning](https://semver.org/):
+- MAJOR version for incompatible changes
+- MINOR version for new features
+- PATCH version for bug fixes
+
+The current version is 1.1.0.
 
 ## Contributing
 
