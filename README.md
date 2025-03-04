@@ -12,6 +12,7 @@ This configuration is optimized for running Mac Studio as a dedicated Ollama ser
 
 ## Latest Updates
 
+- **[v1.2.0]** Added Docker autostart support for container applications (with [Colima](https://github.com/abiosoft/colima))
 - **[v1.1.0]** Added GPU Memory Optimization - configure Metal to use more RAM for models
 - **[v1.0.0]** Initial release with system optimizations and Ollama configuration
 
@@ -25,6 +26,7 @@ See the [CHANGELOG](CHANGELOG.md) for detailed version history.
 - External network access
 - Proper logging setup
 - SSH-based remote management
+- Docker autostart for container applications
 
 ## Requirements
 
@@ -57,7 +59,10 @@ cd mac-studio-server
 # Default values shown
 export OLLAMA_USER=$(whoami)  # User to run Ollama as
 export OLLAMA_BASE_DIR="/Users/$OLLAMA_USER/mac-studio-server"
-export OLLAMA_GPU_PERCENT="80"  # Set to enable GPU memory optimization (percentage of RAM to allocate)
+
+# Optional features - only set these if you need them
+export OLLAMA_GPU_PERCENT="80"  # Optional: Enable GPU memory optimization (percentage of RAM to allocate)
+export DOCKER_AUTOSTART="true"  # Optional: Enable automatic Docker startup
 ```
 
 3. Run the installation script:
@@ -137,7 +142,7 @@ The dramatic reduction in memory usage (around 8GB) is achieved by:
 3. Minimizing GUI-related processes
 4. Optimizing for headless operation
 
-### GPU Memory Optimization
+### GPU Memory Optimization (Optional)
 
 By default, Metal runtime allocates only about 75% of system RAM for GPU operations. This configuration includes optional GPU memory optimization that:
 - Runs at system startup (when enabled)
@@ -175,6 +180,52 @@ For best performance:
 
 These optimizations leave more resources available for Ollama model operations, allowing for better performance when running large language models.
 
+### Docker Autostart (Optional)
+
+If you need to run Docker containers (e.g., for [Open WebUI](https://github.com/open-webui/open-webui)), you can configure Docker to start automatically using Colima. This feature is completely optional.
+
+#### What is Colima?
+
+[Colima](https://github.com/abiosoft/colima) is a container runtime for macOS that's designed to work well in headless environments. It provides Docker API compatibility without requiring Docker Desktop, making it ideal for server use.
+
+#### Prerequisites:
+
+1. Homebrew must be installed (the script will use it to install Colima and Docker CLI)
+2. No special GUI requirements (works perfectly in headless environments)
+
+To enable Docker autostart, run:
+
+```bash
+export DOCKER_AUTOSTART="true"
+./scripts/install.sh
+```
+
+This will:
+1. Install Colima and Docker CLI via Homebrew (if not already installed)
+2. Create a LaunchDaemon that starts Colima automatically at boot time
+3. Configure Colima with default settings
+
+#### Troubleshooting Docker Autostart:
+
+If Docker doesn't start automatically:
+
+1. Check the logs:
+```bash
+cat ~/mac-studio-server/logs/docker.log
+```
+
+2. Try starting Colima manually:
+```bash
+colima start
+```
+
+3. Check Colima status:
+```bash
+colima status
+```
+
+If you don't need Docker containers, you can skip this feature entirely.
+
 ## Versioning
 
 This project follows [Semantic Versioning](https://semver.org/):
@@ -182,7 +233,7 @@ This project follows [Semantic Versioning](https://semver.org/):
 - MINOR version for new features
 - PATCH version for bug fixes
 
-The current version is 1.1.0.
+The current version is *1.2.0*.
 
 ## Contributing
 

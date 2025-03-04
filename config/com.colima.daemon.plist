@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.colima.daemon</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/<OLLAMA_USER>/mac-studio-server/scripts/start-colima.sh</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <false/>
+    <key>StandardErrorPath</key>
+    <string>/Users/<OLLAMA_USER>/mac-studio-server/logs/docker.err</string>
+    <key>StandardOutPath</key>
+    <string>/Users/<OLLAMA_USER>/mac-studio-server/logs/docker.log</string>
+    <key>UserName</key>
+    <string><OLLAMA_USER></string>
+    <key>GroupName</key>
+    <string>staff</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>/Users/<OLLAMA_USER></string>
+        <key>PATH</key>
+        <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    <key>WorkingDirectory</key>
+    <string>/Users/<OLLAMA_USER></string>
+</dict>
+</plist> 

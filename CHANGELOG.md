@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2025-03-04
+
+### Added
+- Docker autostart support
+  - Headless support
+  - Automatic Colima installation and configuration
+  - Configurable via DOCKER_AUTOSTART environment variable
+  - Enables headless container operation
+
 ## [1.1.0] - 2025-03-01
 
 ### Added
